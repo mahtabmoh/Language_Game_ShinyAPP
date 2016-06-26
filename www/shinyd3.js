@@ -28,7 +28,7 @@ Shiny.addCustomMessageHandler("jsondata",
 	var formatCy = d3.format("0");
 		xAxis.tickFormat(formatCy);
 	
-	var svg = d3.select("div_code").append("div")
+	var svg = d3.select("div_tree").append("div")
 		.attr("width", width + margin.left + margin.right)
 		.attr("height", height + margin.top + margin.bottom)
 		.style("margin-right", margin.left + "px")
