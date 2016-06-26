@@ -13,7 +13,7 @@ Shiny.addCustomMessageHandler("jsondata",
 
 	var color = d3.scale.category10();
 
-	var svg = d3.select("div_code").append("div")
+	var svg = d3.select("div_tree").append("div")
 		.attr("width", w + m[1] + m[3])
 		.attr("height", h + m[0] + m[2])
 		.append("g")
