@@ -20,7 +20,7 @@ The goal here is to observe the emergence of a homogenous language, and in gener
 
 The number of the species as well as th iterations are parameters that user choses in the range set in the interface.
 
-<b> Set-up 
+<b> Set-up </b>
 
 As the original program was written in R, I decided to use the "shiny" library in order to illustrate the phenomenon of species evolution visually using plotly and D3 plotting facilities.
 
@@ -33,7 +33,7 @@ So the server.r takes the json object returned from the global.r code and sends 
 
 Therefore, the plots are all illustrated by parameters entered by the user. This provides a good means for conducting empirical studies, beacuse the source program is function-based and these parameters are passed as arguments of functions. Thus, it is possible to observe changes in the system for whoever interested in studying the language as an emergent system. The interactive plots are good means of transferring detailed information and hence one might understand the causes of the fluctuations in the system at evry change in parameters and in every point of time. 
 
-<b> Installation
+<b> Installation </b>
 
 In order to run the application, You might need d3.js latest version or you can simply include the command below to your ui.r file:
 
