@@ -530,5 +530,9 @@ lang.game <- function(iter, n, repr_rate, Beta){
 		}
 		update.generation(m)
 	}
-	aJSON <<- toJSON(aJSON, .withNames = TRUE, pretty = TRUE)
+	a <- data.frame(a)
+	melta <- melt(a, id= "Cycle")
+	library(reshape)
+	ajson <- toJSON(unname(split(melta, 1:nrow(melta))))
+	return(list(Type="json:nested", json=ajson))
 }
