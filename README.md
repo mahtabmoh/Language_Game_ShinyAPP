@@ -1,4 +1,4 @@
-# Language_Game_ShinyAPP
+# Language Game ShinyAPP
 This repository aims to build a web application for visualizing this project: https://github.com/mahtabmoh/Language-Game.
 
 The aforementioned project creates a population of organisms distributed in a linear space, each of which having a set of characteristics. These characteristics are 
@@ -43,7 +43,7 @@ Then, you need to install some R packages including RJSONIO or jsonint or whatev
 
 Now we are ready to build up the server, the ui, and then develop d3 codes and stylesheets.
 
-<b> Not that it is important how you locate the files of the shiny app. The directory including the app should have a structure like this:
+<b> Not that it is important how you locate the files of the shiny app. The directory including the app should have a structure like this: </b>
 
 dir----|
         App---|
