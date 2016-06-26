@@ -26,9 +26,11 @@ shinyUI(fluidPage(
         The nature of the interactions is defined by the strategies of organisms."),
       plotOutput("d3outplot"),
       tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style.css")),
+      #tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style2.css")),
       tags$script(src="http://d3js.org/d3.v3.min.js"),
       tags$script(src="shinyd3.js"),
-      tags$div(id="div_code"),
+      #tags$script(src="showreel_d3.js"),
+      tags$div(id="div_tree"),
       plotlyOutput("encounter")
       )
     )
