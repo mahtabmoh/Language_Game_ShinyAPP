@@ -35,7 +35,7 @@ Therefore, the plots are all illustrated by parameters entered by the user. This
 
 <b> Installation </b>
 
-In order to run the application, You might need d3.js latest version or you can simply include the command below to your ui.r file:
+In order to run the application, first you need to install R and better to install RStudio afterwards. You might then need d3.js latest version or you can simply include the command below to your ui.r file:
 
 src= tags$script(src="http://d3js.org/d3.v3.min.js") 
 
