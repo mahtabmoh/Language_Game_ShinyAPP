@@ -7,7 +7,7 @@
 # *************************************************
 
 
-setwd("~/LGApp/www")
+setwd("~/LGApp")
 
 
 library(shiny)
