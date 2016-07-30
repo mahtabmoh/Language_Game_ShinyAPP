@@ -7,7 +7,7 @@
 # *************************************************
 
 
-setwd("C:/Users/ParMah/Desktop/Vis/LGApp/www")
+setwd("~/LGApp/www")
 
 
 library(shiny)
