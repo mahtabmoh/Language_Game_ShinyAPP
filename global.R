@@ -7,6 +7,9 @@
 # *************************************************
 
 
+setwd("C:/Users/ParMah/Desktop/Vis/LGApp/www")
+
+
 library(shiny)
 library(shinyjs)
 library(ggplot2)
@@ -222,7 +225,6 @@ COOP.vs.POLYGLOT <- function( i, j, iters){
 	} 
 	else {
 		if (iters > memspan){
-			#!!!! <<- à mentionner dans le rapport
 			organism[[j]]$wealth <<- organism[[j]]$wealth + T
 			organism[[i]]$wealth <<- organism[[i]]$wealth + S
 			organism[[j]]$dial <<- organism[[i]]$dial
@@ -438,32 +440,26 @@ giveCol <- function(val){
 # 4. Beta: Beta probability for the number of encounters for each organism
 lang.game <- function(iter, n, repr_rate, Beta){
 	organism <<- vector(mode="list", length=n)
+	orgListDF <<- vector("list", length=n)
+	colHeadDF <- vector("list", length=n)
 	for (org in 1:n){
-		organism[[org]] <<- generate.organism(org)		
+		organism[[org]] <<- generate.organism(org)
+		orgListDF[[org]] <<- organism[[org]]
+		orgListDF[[org]]$dial <<- as.character(paste(orgListDF[[org]]$dial, collapse=' '))
 	}
+	df <- matrix(0 , nrow=iter, ncol =n*5)
+	for (i in seq.int(from=1,to=500, by=5)){
+	  colHead[i] <- "organism.wealth"
+	  colHead[i+1] <- "organism.dialect" 
+	  colHead[i+2] <- "organism.strategy" 
+	  colHead[i+3] <- "organism.memSpan"
+	  colHead[i+4] <- "organism.pos"
+	}
+	rownames(df) <- as.character(c(1:iter))
+	colnames(df) <- colHead
 	encounter.mat(n, Beta)
-	# Construct the abundance matrix
-	a <- matrix(0, nrow=iter, ncol=5)
-	rownames(a) <- as.character(c(1:iter))
-	colnames(a) <- c("CHEAT", "COOP", "POLYGLOT", "MIMIC","Cycle")
 	for (cy in 1:iter){ 
-		for (k in 1:n){
-		  a[cy,5] <- cy
-			if(!is.null(organism[[k]]$strat)){
-				if(organism[[k]]$strat == "CHEAT"){
-					a[cy,1] <- a[cy,1] + 1
-				}
-				if(organism[[k]]$strat == "COOP"){
-					a[cy,2] <- a[cy,2] + 1
-				}
-				if(organism[[k]]$strat == "POLYGLOT"){
-					a[cy,3] <- a[cy,3] + 1
-				}
-				if(organism[[k]]$strat == "MIMIC"){
-					a[cy,4] <- a[cy,4] + 1
-				}
-			}
-		}	
+	  df [cy,] <- organism
 		for (i in 1:(n-1)){
 			for (j in (i+1):n){
 				if (encounter_min[i,j] == 1){
@@ -529,10 +525,9 @@ lang.game <- function(iter, n, repr_rate, Beta){
 			}
 		}
 		update.generation(m)
+		orgListDF <- organism
 	}
-	a <- data.frame(a)
-	melta <- melt(a, id= "Cycle")
-	library(reshape)
-	ajson <- toJSON(unname(split(melta, 1:nrow(melta))))
-	return(list(Type="json:nested", json=ajson))
+	df <- data.frame(df)
+	dfJSON <- toJSON(df)
+	return(dfJSON)
 }
