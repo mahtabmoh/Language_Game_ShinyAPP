@@ -1,36 +1,42 @@
 
 
 
-shinyServer(function(input, output, session){
+
+shinyServer(function(input, output){
   
   
   val <- reactiveValues(doPlot = FALSE)
   observeEvent(input$start, {
     val$doPlot <- input$start
-    output$d3outplot <- renderPlot({
-      data <- reactive({
-        if (val$doPlot == FALSE) return()
-        isolate({
+    output$evolu <- renderPlotly({
+      if (val$doPlot == FALSE) return()
+      isolate({
+        data <- reactive({
           lang.game(
             input$iter,
             input$n,
             input$repr_rate,
-            input$Beta)
+            input$Beta,
+            input$memspan,
+            input$dial_change_rate,
+            input$wealth.reset)
+          })
+        orgDF <- lang.game(input$iter,
+                           input$n,
+                           input$repr_rate,
+                           input$Beta,
+                           input$memspan,
+                           input$dial_change_rate,
+                           input$wealth.reset)
+        dialects <- seq(2,input$n, by=5)
+        pos <- seq(5, input$n, by=5)
+        strats <- seq(3, input$n, by=5)
+        wealths <- seq(1, input$n, by=5)
+        ply2 <- plot_ly(x = input$iter, y = orgDF[,pos] , text = paste("dialect: ", orgDF[,dialects]),
+                mode = "markers", color = orgDF[,strats], size = orgDF[,wealths])
         })
-        data
-        session$sendCustomMessage(type="jsondata",data)
       })
-    })
-  })
-  
-  
-  observeEvent(input$reset, {
-    val$doPlot <- FALSE
-  })
-  
-  output$encounter <- renderPlotly({
-    
-    p("The plot below illustrates the number of encounters for each organism. By hoovering on the points you can see the identity (assign by position in linear space), and the number of encounters")
+    output$encounter <- renderPlotly({
     if (val$doPlot == FALSE) return()
     isolate({
       data <- reactive({
@@ -38,7 +44,10 @@ shinyServer(function(input, output, session){
           input$iter,
           input$n,
           input$repr_rate,
-          input$Beta
+          input$Beta,
+          input$memspan,
+          input$dial_change_rate,
+          input$wealth.reset
           )
       })
       OrganismID <- c(1:input$n)
@@ -52,3 +61,6 @@ shinyServer(function(input, output, session){
     })
   })
 })
+})
+
+#session$sendCustomMessage(type="jsoinput$n",data)
