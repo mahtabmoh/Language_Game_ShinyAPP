@@ -8,6 +8,8 @@ shinyServer(function(input, output){
   val <- reactiveValues(doPlot = FALSE)
   observeEvent(input$start, {
     val$doPlot <- input$start
+    
+    # Dynamic plot, illustrating the evolution of the species over iterations
     output$evolu <- renderPlotly({
       if (val$doPlot == FALSE) return()
       isolate({
@@ -36,6 +38,8 @@ shinyServer(function(input, output){
                 mode = "markers", color = orgDF[,strats], size = orgDF[,wealths])
         })
       })
+      
+    # Static plot, showing the encounter models
     output$encounter <- renderPlotly({
     if (val$doPlot == FALSE) return()
     isolate({
@@ -63,4 +67,5 @@ shinyServer(function(input, output){
 })
 })
 
-#session$sendCustomMessage(type="jsoinput$n",data)
+# In case of linkage with .js codes in www folder
+#session$sendCustomMessage(type="jsondata",data)
