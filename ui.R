@@ -1,4 +1,4 @@
-
+# SHINY USER INTERFACE FOR LGAPP
 
 
 #reactiveBar <- function (outputId) 
