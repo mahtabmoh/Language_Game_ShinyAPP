@@ -9,18 +9,24 @@
 
 setwd("~/LGApp")
 
+# This is the global R source code for LG shiny app.
+# The main codes for simulation can be found at https://github.com/mahtabmoh/Language-Game/tree/master/src
+# The difference between the main source code and this code is in the output data set.
 
 library(shiny)
-library(shinyjs)
 library(ggplot2)
-library(RJSONIO)
 library(plotly)
+library(googleVis)
+suppressPackageStartupMessages(library(googleVis))
 
 #*****************
 # Game Setup
 #*****************
 
+# Initiating fixed parameters
+# (Other parameters are entered by user in the ui of the app)
 
+wealth <- 50
 give = FALSE # A logical to inform agents of the previous act of the opponent
 receive = FALSE ##
 
@@ -51,6 +57,9 @@ generate.organism <- function(pos=0,memSpan){
 	return(organism)
 }
 
+# Update the generation after each cycle of the game
+# Depending of the repr_rate, the richest organism will replicate,
+# while the same number of the poorest organism will be eliminated from the population
 
 update.generation <- function(r_rate, w.reset){
 	# Construct a vector of wealths for evaluating the performance of agents
@@ -100,17 +109,17 @@ update.generation <- function(r_rate, w.reset){
 	}
 }
 
-
+#Update the wealth of population at the end of each cycle 
+#To reflect seasonal and random fluctuations in the supply of resources
 update.wealth <- function(i){
-	#Update the wealth of population at the end of each cycle 
-	#To reflect seasonal and random fluctuations in the supply of resources
-	change.amount <<- sample(seq(-4, 4, 1),1)
-	organism[[i]]$wealth <<- organism[[i]]$wealth + change.amount
+	change.amount <- sample(seq(-4, 4, 1),1)
+	organism[[i]]$wealth <- organism[[i]]$wealth + change.amount
 }
 
+# Polyglots update their dialect after each exchange
+# dial_change_rate(dialCR): Dialect update probability factor
+# This probability is set to 1%
 update.dialect <- function(i,dialCR){
-	# Dialect update probability factor
-	# This probability is set to 1%
 	dial_prob <- sample(c(1:100), 1)
 	return(dial_prob)
   if(dial_prob <= dialCR){
@@ -121,7 +130,9 @@ update.dialect <- function(i,dialCR){
 	 }
 }
 
-#Encounter probability
+# Encounter probability
+# Implementing the linear space
+# Closer the organism are together, higher the probability of their encounter
 encounter.mat <- function(n, Beta){
 	#Encounter probability
 	W <- matrix (0, nrow=n, ncol=n)
@@ -417,13 +428,6 @@ COOP.vs.COOP <- function( i, j){
 # Let's play!
 #*********************
 
-#Function for plotting the positions change
-giveCol <- function(val){
-	if(val == "COOP") {return("chartreuse3") }
-	else if(val == "CHEAT"){return ("indianred1")}
-	else if(val == "POLYGLOT"){return ("mediumaquamarine")}
-	else if(val == "MIMIC"){return ("mediumorchid1")}	
-}
 
 #Game function
 # Parameters:
@@ -432,27 +436,57 @@ giveCol <- function(val){
 # 3. r_rate: number of deaths and births ant the end of each cycle
 # 4. Beta: Beta probability for the number of encounters for each organism
 lang.game <- function(iters, n, r_rate, Beta, memSpan, dialCR, w.reset){
-  organism <- vector(mode="list", length=n)
-  orgListDF <- vector("list", length=n)
-  colHead <- vector("list", length=n)
+  
+  # Initiate the list of organisms
+  organism <<- vector(mode="list", length=n)
+  
+  # Create a copy of the organisms' list in order to manipulate the parameters without having them changed in the original list
+  orgListDF <<- vector("list", length=n)
+  
+  # Initiate the result matrix including all data about the organisms at each cycles
+  orgDF <<- matrix(0 , nrow=n*5, ncol =0)
+  
+  # Create a vector to buffer the unlisted orgLisDF
+  d <<- vector("list", length= n*5)
   for (org in 1:n){
-    organism[[org]] <- generate.organism(org, memSpan)
-    orgListDF[[org]] <- organism[[org]]
-    orgListDF[[org]]$dial <- as.character(paste(orgListDF[[org]]$dial, collapse=' '))
+    organism[[org]] <<- generate.organism(org, memSpan)
+    orgListDF[[org]] <<- organism[[org]]
+    # Convert The list of dialect to a character string in order to be able to place in in a single cell of orgDF matrix
+    orgListDF[[org]]$dial <<- as.character(paste(organism[[org]]$dial, collapse=' '))
   }
-  orgDF <<- matrix(0 , nrow=iters, ncol =(n*5))
-  for (i in seq.int(from=1,to=n*5, by=5)){
-    colHead[i] <- "organism.wealth"
-    colHead[i+1] <- "organism.dialect" 
-    colHead[i+2] <- "organism.strategy" 
-    colHead[i+3] <- "organism.memSpan"
-    colHead[i+4] <- "organism.pos"
-  }
-  rownames(orgDF) <- as.character(c(1:iters))
-  colnames(orgDF) <- colHead
+  
+  # Create abundance matrix for googleVis line chart
+  abund <<- matrix(0, nrow=iters, ncol=5)
+  colnames(abund) <- c("Cycle", "CHEAT", "COOP","POLYGLOT","MIMIC")
   encounter.mat(n, Beta)
   for (cy in 1:iters){ 
-    assign("orgDF[cy,]",unlist(orgListDF), envir = .GlobalEnv)
+    o <<- unlist(orgListDF)
+    o1 <<- suppressWarnings(as.array(lapply(o,as.integer)))
+    for (i in 1:length(o)){
+      if(is.na(o1[i])){
+        o1[i]<<-o[i]
+      }
+    }
+    d <<- o1
+    orgDF <<- cbind(orgDF,d)
+    orgDF_final <<- t(orgDF)
+    abund[cy,1] <- cy
+    for (k in 1:n){
+      if(!is.null(organism[[k]]$strat)){
+        if(organism[[k]]$strat == "CHEAT"){
+          abund[cy,2] <- abund[cy,1] + 1
+        }
+        if(organism[[k]]$strat == "COOP"){
+          abund[cy,3] <- abund[cy,2] + 1
+        }
+        if(organism[[k]]$strat == "POLYGLOT"){
+          abund[cy,4] <- abund[cy,3] + 1
+        }
+        if(organism[[k]]$strat == "MIMIC"){
+          abund[cy,5] <- abund[cy,4] + 1
+        }
+      }
+    }
     for (i in 1:(n-1)){
       for (j in (i+1):n){
         if (encounter_min[i,j] == 1){
@@ -513,17 +547,30 @@ lang.game <- function(iters, n, r_rate, Beta, memSpan, dialCR, w.reset){
             }
           }
           update.wealth(i)
-          update.wealth(j)					
+          update.wealth(j)
         }
       }
     }
     update.generation(r_rate, w.reset)
     orgListDF <<- organism
-    for(i in 1:n) {assign("orgListDF[[i]]$dial",  as.character(paste(orgListDF[[i]]$dial, collapse=' ')),envir = .GlobalEnv)}
+    for(i in 1:n) {orgListDF[[i]]$dial <<- as.character(paste(organism[[i]]$dial, collapse=' '))}
   }
-  return(orgDF)
+  dtarget <<- matrix(0, nrow=0,ncol=6)
+  for (i in seq(1,n*5,5)){
+    dtarget <<- rbind(dtarget,(cbind(as.numeric(c(1:iters)),orgDF_final[,(i: (i+4))])))
+  }
+  colnames(dtarget) <- c("cycle", "wealth", "dial", "strat", "memSpan","pos")
+  row.names(dtarget) <- NULL
+  dtarget <<- as.data.frame(dtarget)
+  abund <- as.data.frame(abund)
+  # Reshape the abundance matrix in order to get the variables in cycle order
+  library(reshape)
+  abund_melted <- melt(abund, id="Cycle")
+  abund_melted$variable <- as.character(abund_melted$variable)
+  return(list(dtarget, abund_melted))
+  
+  # Create JSON if intrested
   #orgorgDFJSON <- toJSON(orgDF)
   #return(orgDFJSON)
-  #write(orgDFJSON, "orgDF.json")
 }
 
