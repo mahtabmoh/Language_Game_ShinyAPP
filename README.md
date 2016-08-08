@@ -24,17 +24,14 @@ The number of the species as well as the iterations are parameters that user cho
 
 As the original program was written in R, I decided to use the "shiny" library in order to illustrate the phenomenon of species evolution visually using plotly and GoogleVis plotting facilities. So there are three different charts shown in the user interface:
 
-1.
-The first plot is brought to the user by {plotly} library in R which converts the ggplots (a very useful R plotting library {ggplot2}) into plotly plots, a JavaScript library for creating interactive chart. This second plot is namely referred to as the static plot, showing the number of encounters to the user. Parameters are the beta factor and the number of the organisms. As beta increases the number of encounters decreases. One can observe this by changing the beta parameter in the parameter panel.
+1. The first plot is brought to the user by {plotly} library in R which converts the ggplots (a very useful R plotting library {ggplot2}) into plotly plots, a JavaScript library for creating interactive chart. This second plot is namely referred to as the static plot, showing the number of encounters to the user. Parameters are the beta factor and the number of the organisms. As beta increases the number of encounters decreases. One can observe this by changing the beta parameter in the parameter panel.
 
-2.
-The second plot, named the dynamic plot, is a motion chart rendered in shiny using {googleVis} library in R. The plot generator function is called gvisMotionChart, which provides the motion chart of Google Analytics, a JavaScript library.
+2. The second plot, named the dynamic plot, is a motion chart rendered in shiny using {googleVis} library in R. The plot generator function is called gvisMotionChart, which provides the motion chart of Google Analytics, a JavaScript library.
 The aim here is to show the convergence in the population, as well as the emergence of a homogenous behavior during the course of language evolution. Colors define the species groups and the size of the bubbles shows the abundance of the organisms.
 This plot provides user with three different types of plots: 1. bubble, 2. bar, and 3. line charts. 
 This plot generator function is very concrete in terms of visualization, as the parameters such as hover events and the motion speed is internally integrated into the function and shows op each time the plot is rendered.
 
-3. 
-The third plot is a bubble scatter plot provided by plotly, illustrating the change in the population over cycles, and summarizes whatever has happened during the iterations of the game. It is a concrete visualization of the game that provides the user with full information of the organisms, their behavior, and their dialect. It shows a homogeneous language at the end of some iterations over the whole population.
+3. The third plot is a bubble scatter plot provided by plotly, illustrating the change in the population over cycles, and summarizes whatever has happened during the iterations of the game. It is a concrete visualization of the game that provides the user with full information of the organisms, their behavior, and their dialect. It shows a homogeneous language at the end of some iterations over the whole population.
 
 
 It is also useful to mention that there are numerous ways of plot generation using Shiny, and I found the two aforementioned methods suitable for visualizing my data. 
