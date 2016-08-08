@@ -27,7 +27,6 @@ As the original program was written in R, I decided to use the "shiny" library i
 1.
 The first plot is brought to the user by {plotly} library in R which converts the ggplots (a very useful R plotting library {ggplot2}) into plotly plots, a JavaScript library for creating interactive chart. This second plot is namely referred to as the static plot, showing the number of encounters to the user. Parameters are the beta factor and the number of the organisms. As beta increases the number of encounters decreases. One can observe this by changing the beta parameter in the parameter panel.
 
-
 2.
 The second plot, named the dynamic plot, is a motion chart rendered in shiny using {googleVis} library in R. The plot generator function is called gvisMotionChart, which provides the motion chart of Google Analytics, a JavaScript library.
 The aim here is to show the convergence in the population, as well as the emergence of a homogenous behavior during the course of language evolution. Colors define the species groups and the size of the bubbles shows the abundance of the organisms.
