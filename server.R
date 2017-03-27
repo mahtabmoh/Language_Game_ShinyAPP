@@ -117,6 +117,8 @@ shinyServer(function(input, output, session){
         cycle <- as.numeric(odf$cycle)
         wealth <- as.numeric(odf$wealth)
         pos <- as.numeric(odf$pos)
+        dial <- odf$dial
+        strat <- odf$strat
         # Scatter plot rendering with the data frame variables as the parameters to the plot
         ply2 <- plot_ly(data=odf,
                         type = "scatter",
