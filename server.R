@@ -120,6 +120,7 @@ shinyServer(function(input, output, session){
         dial <- odf$dial
         strat <- odf$strat
         # Scatter plot rendering with the data frame variables as the parameters to the plot
+        library(RColorBrewer)
         ply2 <- plot_ly(data=odf,
                         type = "scatter",
                         x = cycle ,
@@ -130,12 +131,12 @@ shinyServer(function(input, output, session){
                         marker= list(
                           size = wealth,
                           sizemode='diameter',
-                          sizeref= 3),
+                          sizeref= 1),
                         # Define color of bubbles according to the strategies
-                        color = strat
+                        color = strat,
                         # Choose palette (from https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
-                        #colors="PuOr"
-                       ) %>%
+                        colors="Set1"
+                        ) %>%
                         layout(height = 1000)
       })
     })
