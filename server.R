@@ -48,15 +48,13 @@ shinyServer(function(input, output, session){
                                   input$memspan,
                                   input$dial_change_rate,
                                   input$wealth_reset)
-        variable <- abund_melted$variable
-        Cycle <- abund_melted$Cycle
-        value <- abund_melted$value
+       
         gvisMotionChart(data=abund_melted, 
-                        idvar=variable, 
-                        timevar= Cycle,
-                        xvar = Cycle,
-                        yvar = value,
-                        colorvar = variable)
+                        idvar="variable", 
+                        timevar= "Cycle",
+                        xvar = "Cycle",
+                        yvar = "value",
+                        colorvar = "variable")
         })
       })
   })
