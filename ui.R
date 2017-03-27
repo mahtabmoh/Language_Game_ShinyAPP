@@ -40,7 +40,7 @@ shinyUI(fluidPage(
       h3("About the Game"),
       h4("This game simulates interactions between the members of a population of organisms that are assigned some randome characteristics.
         Organims are distributed randomly in a linear space, and interact with their neighbours.
-        The nature of the interactions is defined by the strategies of organisms. A group of organisms having the same strategy is referred to as <b>Species<\b>."),
+        The nature of the interactions is defined by the strategies of organisms. A group of organisms having the same strategy is referred to as Species."),
       h5("(Navigate between the tabs to view static/dynamic plots.)"),
       h5("(Due to the large size of the output dataset rendering might take several minutes.)"),
       tabsetPanel(
