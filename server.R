@@ -120,12 +120,6 @@ shinyServer(function(input, output, session){
         dial <- odf$dial
         strat <- odf$strat
         # Scatter plot rendering with the data frame variables as the parameters to the plot
-        giveCol <- function(val){
-	        if(val == "COOP") {return("red") }
-	        else if(val == "CHEAT"){return ("blue")}
-	        else if(val == "POLYGLOT"){return ("green")}
-	        else if(val == "MIMIC"){return ("darkgrey")}	
-        }
         ply2 <- plot_ly(data=odf,
                         type = "scatter",
                         x = cycle ,
@@ -138,9 +132,9 @@ shinyServer(function(input, output, session){
                           sizemode='diameter',
                           sizeref= 6),
                         # Define color of bubbles according to the strategies
-                        color = givCol(strat)
+                        color = strat,
                         # Choose palette (from https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
-                        #colors="Set1" 
+                        colors="Set1" 
                         ) %>%
                         layout(height = 1000)
       })
