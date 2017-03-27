@@ -137,8 +137,8 @@ shinyServer(function(input, output, session){
                           size = wealth,
                           sizemode='diameter',
                           sizeref= 6,
-                          color=givCol(strat)),
-                        %>%
+                          color=givCol(strat)
+			)%>%
                         layout(height = 1000)
       })
     })
