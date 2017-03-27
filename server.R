@@ -130,19 +130,23 @@ shinyServer(function(input, output, session){
                         type = "scatter",
                         x = cycle ,
                         y = pos,
-                        text = paste("dialect: ", dial, ", strategy:" , strat),
+                        text = paste("dialect: ", dial, ", strategy: ", strat),
                         mode = "markers",
                         # Define the size of the bubbles according to the wealth of organisms
                         marker= list(
                           size = wealth,
                           sizemode='diameter',
-                          sizeref= 6,
-                          color=givCol(strat))
-			)%>%
-                        #layout(height = 1000)
+                          sizeref= 6),
+                        # Define color of bubbles according to the strategies
+                        color = givCol(strat)
+                        # Choose palette (from https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
+                        #colors="Set1" 
+                        ) %>%
+                        layout(height = 1000)
       })
     })
   })
+
 })
 
 #session$sendCustomMessage(type="jsoinput$n",data)
