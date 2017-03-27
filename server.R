@@ -130,7 +130,7 @@ shinyServer(function(input, output, session){
                         marker= list(
                           size = wealth,
                           sizemode='diameter',
-                          sizeref= 4),
+                          sizeref= 3),
                         # Define color of bubbles according to the strategies
                         color = strat
                         # Choose palette (from https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
