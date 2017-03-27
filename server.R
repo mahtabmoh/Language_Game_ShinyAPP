@@ -132,9 +132,10 @@ shinyServer(function(input, output, session){
                           sizemode='diameter',
                           sizeref= 6),
                         # Define color of bubbles according to the strategies
-                        color = strat,
+                        color = strat
                         # Choose palette (from https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
-                        colors="PuOr" ) %>%
+                        #colors="PuOr"
+                       ) %>%
                         layout(height = 1000)
       })
     })
