@@ -114,9 +114,9 @@ shinyServer(function(input, output, session){
         
         # Convert integer columns to numeric 
         odf <- as.data.frame(odf)
-        odf$cycle <- as.numeric(odf$cycle)
-        odf$wealth <- as.numeric(odf$wealth)
-        odf$pos <- as.numeric(odf$pos)
+        cycle <- as.numeric(odf$cycle)
+        wealth <- as.numeric(odf$wealth)
+        pos <- as.numeric(odf$pos)
         # Scatter plot rendering with the data frame variables as the parameters to the plot
         ply2 <- plot_ly(data=odf,
                         type = "scatter",
