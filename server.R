@@ -124,13 +124,13 @@ shinyServer(function(input, output, session){
                         type = "scatter",
                         x = cycle ,
                         y = pos,
-                        text = paste("dialect: ", dial),
+                        text = paste("dialect: ", dial, ", strategy:" , strat),
                         mode = "markers",
                         # Define the size of the bubbles according to the wealth of organisms
                         marker= list(
                           size = wealth,
                           sizemode='diameter',
-                          sizeref= 6),
+                          sizeref= 4),
                         # Define color of bubbles according to the strategies
                         color = strat
                         # Choose palette (from https://cran.r-project.org/web/packages/RColorBrewer/RColorBrewer.pdf)
